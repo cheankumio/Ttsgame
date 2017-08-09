@@ -10,22 +10,31 @@ import android.speech.tts.TextToSpeech;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.transition.Visibility;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Vector;
+
+import tyrantgit.explosionfield.ExplosionField;
 
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener,View.OnClickListener{
     Vector<QA> qaList = new Vector<QA>();
@@ -39,11 +48,19 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     SpeechRecognizer speechRecognizer;
     RecognitionProgressView recognitionProgressView;
     openingLine opLine;
-
+    ExplosionField explosionField;
+    RecyclerViewAdapter rvAdapter;
+    RecyclerView mRecyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        explosionField = ExplosionField.attach2Window(this) ;
 
         new TedPermission(this)
                 .setDeniedMessage("請賦予應用權限，否則無法正常使用\n\n請按下設定 [設定] > [權限] > 將權限打開")
@@ -53,9 +70,17 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     @Override
                     public void onPermissionGranted() {
                         speak_btn = (Button) findViewById(R.id.speak_btn);
+
+                        mRecyclerView = (RecyclerView) findViewById(R.id.talkroom);
+
                         voice_speed = (SeekBar)findViewById(R.id.voice_speed);
                         voice_pitch = (SeekBar)findViewById(R.id.voice_pitch);
                         input_text = (EditText)findViewById(R.id.editText2);
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+                        mRecyclerView.setLayoutManager(layoutManager);
+                        rvAdapter = new RecyclerViewAdapter(MainActivity.this);
+                        mRecyclerView.setAdapter(rvAdapter);
+
                         textToSpeech = new TextToSpeech(MainActivity.this,MainActivity.this);
                         speak_btn.setOnClickListener(MainActivity.this);
                         voice_seekBar_setting();
@@ -88,7 +113,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             {
                 Log.d("MYLOG","this language is not supported");
             }else{
-                speakOut(opLine.getRandomOpeningLine());
+                String msg = opLine.getRandomOpeningLine();
+                speakOut(msg);
+                rvAdapter.addMessage(0,msg);
             }
 
         }
@@ -103,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             textToSpeech.setPitch(0.1f);
         }
         textToSpeech.speak(text,TextToSpeech.QUEUE_FLUSH,null);
+        rvAdapter.addMessage(0,text);
+        mRecyclerView.smoothScrollToPosition(rvAdapter.getItemCount());
     }
 
     @Override
@@ -122,8 +151,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         String[] ssssss = matches.toArray(new String[0]);
         //runSometing(ssssss);
         //Log.d("MYLOG",ssssss[0]);
+        String reStr = answer(ssssss[0]);
         input_text.setText(ssssss[0]);
-        speakOut(ssssss[0]);
+        rvAdapter.addMessage(1,ssssss[0]);
+        mRecyclerView.smoothScrollToPosition(rvAdapter.getItemCount());
         //Toast.makeText(this, str5+" / "+ Pinyin.toPinyin(str5,""), Toast.LENGTH_LONG).show();
 //        for (String s : ssssss) {
 //            alltext += s + " / " + Pinyin.toPinyin(s, "") + "\n";
@@ -134,6 +165,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         //if(record==false)return;
         //startRecognition();
         recognitionProgressView.setVisibility(View.GONE);
+        speakOut(reStr);
+
     }
 
     private void setRecognition() {
@@ -157,11 +190,16 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             public void onResults(Bundle results) {
                 Log.d("MYLOG", "onResults");
                 showResults(results);
+                reset(speak_btn);
             }
 
             @Override
             public void onError(int error) {
                 super.onError(error);
+                Log.d("MYLOG", "onError");
+                rvAdapter.addMessage(0,"我聽不懂你在說什麼");
+                mRecyclerView.smoothScrollToPosition(rvAdapter.getItemCount());
+                reset(speak_btn);
                 //if(record==false)return;
                 //startRecognition();
             }
@@ -191,21 +229,35 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
+    private void reset(View v){
+        v.setScaleX(1);
+        v.setScaleY(1);
+        v.setAlpha(1);
+        v.setOnClickListener(this);
+    }
 
     @Override
     public void onClick(View v) {
+
         if(!textToSpeech.isSpeaking()) {
+
             if (v.getId() == R.id.speak_btn) {
+                v.setOnClickListener(null);
+                Log.d("MYLOG",speak_btn.getVisibility()+"");
+                explosionField.explode(v);
 
                 //speakOut(answer(input_text.getText().toString()));
                 //Log.d("MYLOG",answer(input_text.getText().toString()));
                 startRecognition();
                 recognitionProgressView.setVisibility(View.VISIBLE);
-                speakOut("請說");
+                //speakOut("請說");
             }
         }else{
             speakOut("我還在講話你插什麼嘴我不想講了!");
+            rvAdapter.addMessage(0,"我還在講話你插什麼嘴我不想講了!");
+            mRecyclerView.smoothScrollToPosition(rvAdapter.getItemCount());
         }
+
     }
 
     private void voice_seekBar_setting() {
@@ -247,7 +299,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         String kb = STR.file2text(this,pFile, "UTF-8");
         String[] blocks = kb.split("Q\\:");
         for (int i=0; i<blocks.length; i++) {
-
             String block = blocks[i].trim();
             //Log.d("MYLOG",block);
             if (block.length()==0) continue;

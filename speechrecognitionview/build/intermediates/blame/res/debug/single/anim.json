@@ -1,0 +1,42 @@
+[
+    {
+        "merged": "D:\\androidSample\\Ttsgame\\speechrecognitionview\\build\\intermediates\\res\\merged\\debug\\anim\\abc_slide_in_top.xml",
+        "source": "C:\\Users\\c1103304\\.android\\build-cache\\1c3dcfaa4879d68e623134a6e4bea1ddfbd4c92f\\output\\res\\anim\\abc_slide_in_top.xml"
+    },
+    {
+        "merged": "D:\\androidSample\\Ttsgame\\speechrecognitionview\\build\\intermediates\\res\\merged\\debug\\anim\\abc_slide_out_top.xml",
+        "source": "C:\\Users\\c1103304\\.android\\build-cache\\1c3dcfaa4879d68e623134a6e4bea1ddfbd4c92f\\output\\res\\anim\\abc_slide_out_top.xml"
+    },
+    {
+        "merged": "D:\\androidSample\\Ttsgame\\speechrecognitionview\\build\\intermediates\\res\\merged\\debug\\anim\\abc_slide_in_bottom.xml",
+        "source": "C:\\Users\\c1103304\\.android\\build-cache\\1c3dcfaa4879d68e623134a6e4bea1ddfbd4c92f\\output\\res\\anim\\abc_slide_in_bottom.xml"
+    },
+    {
+        "merged": "D:\\androidSample\\Ttsgame\\speechrecognitionview\\build\\intermediates\\res\\merged\\debug\\anim\\abc_fade_in.xml",
+        "source": "C:\\Users\\c1103304\\.android\\build-cache\\1c3dcfaa4879d68e623134a6e4bea1ddfbd4c92f\\output\\res\\anim\\abc_fade_in.xml"
+    },
+    {
+        "merged": "D:\\androidSample\\Ttsgame\\speechrecognitionview\\build\\intermediates\\res\\merged\\debug\\anim\\abc_popup_enter.xml",
+        "source": "C:\\Users\\c1103304\\.android\\build-cache\\1c3dcfaa4879d68e623134a6e4bea1ddfbd4c92f\\output\\res\\anim\\abc_popup_enter.xml"
+    },
+    {
+        "merged": "D:\\androidSample\\Ttsgame\\speechrecognitionview\\build\\intermediates\\res\\merged\\debug\\anim\\abc_grow_fade_in_from_bottom.xml",
+        "source": "C:\\Users\\c1103304\\.android\\build-cache\\1c3dcfaa4879d68e623134a6e4bea1ddfbd4c92f\\output\\res\\anim\\abc_grow_fade_in_from_bottom.xml"
+    },
+    {
+        "merged": "D:\\androidSample\\Ttsgame\\speechrecognitionview\\build\\intermediates\\res\\merged\\debug\\anim\\abc_popup_exit.xml",
+        "source": "C:\\Users\\c1103304\\.android\\build-cache\\1c3dcfaa4879d68e623134a6e4bea1ddfbd4c92f\\output\\res\\anim\\abc_popup_exit.xml"
+    },
+    {
+        "merged": "D:\\androidSample\\Ttsgame\\speechrecognitionview\\build\\intermediates\\res\\merged\\debug\\anim\\abc_shrink_fade_out_from_bottom.xml",
+        "source": "C:\\Users\\c1103304\\.android\\build-cache\\1c3dcfaa4879d68e623134a6e4bea1ddfbd4c92f\\output\\res\\anim\\abc_shrink_fade_out_from_bottom.xml"
+    },
+    {
+        "merged": "D:\\androidSample\\Ttsgame\\speechrecognitionview\\build\\intermediates\\res\\merged\\debug\\anim\\abc_slide_out_bottom.xml",
+        "source": "C:\\Users\\c1103304\\.android\\build-cache\\1c3dcfaa4879d68e623134a6e4bea1ddfbd4c92f\\output\\res\\anim\\abc_slide_out_bottom.xml"
+    },
+    {
+        "merged": "D:\\androidSample\\Ttsgame\\speechrecognitionview\\build\\intermediates\\res\\merged\\debug\\anim\\abc_fade_out.xml",
+        "source": "C:\\Users\\c1103304\\.android\\build-cache\\1c3dcfaa4879d68e623134a6e4bea1ddfbd4c92f\\output\\res\\anim\\abc_fade_out.xml"
+    }
+]
